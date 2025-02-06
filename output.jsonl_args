@@ -1,0 +1,14 @@
+{
+    "input_file": "statement.jsonl",
+    "output_file": "output.jsonl",
+    "claim_field": "claim",
+    "context_field": null,
+    "model": "gpt-3.5-turbo",
+    "temperature_qgen": 0.7,
+    "hallucinate_evidence": false,
+    "max_search_results_per_query": 5,
+    "max_sentences_per_passage": 4,
+    "sliding_distance": 1,
+    "max_passages_per_search_result": 1,
+    "resume": false
+}
