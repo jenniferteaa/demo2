@@ -7,12 +7,17 @@ import openai
 from openai.error import RateLimitError, ServiceUnavailableError
 
 # If OPENAI_API_KEY isn't already set in openai.api_key, try loading from environment
-if not openai.api_key:
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+
+
+from mistralai import Mistral
+# Initialize Mistral API
+api_key = "Replace with your valid API key"  # 
+model = "mistral-large-latest"
+client = Mistral(api_key=api_key)
 
 def call_openai_api(
     messages,
-    model="gpt-3.5-turbo",
+    model="mistral-large-latest",
     temperature=0,
     max_retries=5,
     use_cache=True,
@@ -47,11 +52,12 @@ def call_openai_api(
     attempt = 0
     while attempt < max_retries:
         try:
-            response = openai.ChatCompletion.create(
+            response = client.chat.complete(
                 model=model,
                 messages=messages,
                 temperature=temperature
             )
+            print("response from newfile: ", response)
             # 3. Store response in cache, if successful and cache is enabled
             if use_cache:
                 save_to_cache(messages, model, temperature, response, cache_dir)
@@ -119,12 +125,3 @@ def create_cache_key(messages, model, temperature):
     }
     encoded = json.dumps(raw_data, sort_keys=True).encode("utf-8")
     return hashlib.md5(encoded).hexdigest()
-
-# Optionally, if you want token counting, uncomment:
-# import tiktoken
-# def count_tokens(messages, model="gpt-3.5-turbo"):
-#     encoding = tiktoken.encoding_for_model(model)
-#     total_tokens = 0
-#     for msg in messages:
-#         total_tokens += len(encoding.encode(msg["content"]))
-#     return total_tokens
