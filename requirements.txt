@@ -9,3 +9,4 @@ spacy==3.5.1
 torch==2.0.0+cpu
 tqdm==4.65.0
 transformers==4.27.3
+huggingface-hub==0.25.2
